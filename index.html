@@ -143,12 +143,10 @@ body {
 
 /* SEARCH */
 .search-panel {
-  padding: 10px;
+  padding: 20px;
   border-color: #00ff88;
   box-shadow: 0 0 15px #00ff88;
-  animation: shimmer 5s infinite;
-  background: linear-gradient(90deg,#000000,#000000,#000000,#290000,#004b2e,#9e9400,#9e9400,#290000);
-  
+  animation: shimmer 5s ease infinite;
 }
 
 @keyframes gradientShift {
@@ -161,9 +159,9 @@ body {
   width: 300px;
   padding: 10px;
   font-size: 16px;
-  background-color: #1b1c22;
+  background-color: #1b1b20;
   color: white;
-  border: 2px solid #2b2c33;
+  border: 2px solid #010202;
   border-radius: 6px;
 }
 
@@ -229,7 +227,41 @@ body {
   font-size: 14px;
   text-align: center;
   width: 100%;
+  font-family: sans-serif;
+  -webkit-text-fill-color: #e6e6e6;
 }
+
+/* FADED BACKGROUND IMAGE BEHIND ITEMS */
+.container {
+  position: relative;
+  height: calc(100vh - 260px);
+  overflow: hidden;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(
+      rgba(10,10,15,0.85),
+      rgba(10,10,15,0.85)
+    ),
+    url("ARCRAIDERBG.png");  /* <-- CHANGE THIS TO YOUR IMAGE */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 1.0;        /* Controls fade strength */
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Make sure library stays above background */
+.library {
+  position: relative;
+  z-index: 1;
+}
+
 </style>
 </head>
 
@@ -451,5 +483,3 @@ renderItems(items, false);
 
 </body>
 </html>
-
-
