@@ -18,17 +18,10 @@
     /* HEADER */
     .site-header {
       width: 100%;
-      padding: 20px 0 15px 0;
+      padding: 25px 0 15px 0;
       text-align: center;
       background-color: #1f1f1f;
       border-bottom: 2px solid #2a2a2a;
-      color: #7cff00;
-
-      text-shadow:
-        0 0 5px #7cff00,
-        0 0 10px #7cff00,
-        0 0 20px #4cff00;
-      animation: glowPulse 2.5s infinite alternate;
     }
 
     .title {
@@ -37,33 +30,36 @@
       font-family: 'Orbitron', sans-serif;
     }
 
-    /* Remove glow from subtitle */
-    .subtitle {
-      margin-top: 10px;
-      font-size: 14px;
-      font-weight: 400;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-shadow: none;
-      line-height: 1.6;
+    /* ARC Raiders Gradient Glow */
+    .arc-raiders {
+      background: linear-gradient(
+        90deg,
+        #00c3ff,   /* blue */
+        #00ff9d,   /* green */
+        #ffee00,   /* yellow */
+        #ff2a2a    /* red */
+      );
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 6s ease infinite;
+      text-shadow: 0 0 10px rgba(255,255,255,0.2);
     }
 
-    /* Green Glow Word */
-    .green-glow {
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Lootgoblins Paradise Green Glow */
+    .loot-title {
       color: #7cff00;
       text-shadow:
         0 0 5px #7cff00,
-        0 0 10px #4cff00,
+        0 0 10px #7cff00,
         0 0 20px #4cff00;
-    }
-
-    /* Red Glow Word */
-    .red-glow {
-      color: #ff3b3b;
-      text-shadow:
-        0 0 5px #ff3b3b,
-        0 0 10px #ff0000,
-        0 0 20px #b30000;
+      animation: glowPulse 2.5s infinite alternate;
     }
 
     @keyframes glowPulse {
@@ -81,11 +77,35 @@
       }
     }
 
-    /* SEARCH BAR */
+    /* Subtitle */
+    .subtitle {
+      margin-top: 12px;
+      font-size: 14px;
+      color: white;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    .green-glow {
+      color: #7cff00;
+      text-shadow:
+        0 0 5px #7cff00,
+        0 0 10px #4cff00,
+        0 0 20px #4cff00;
+    }
+
+    .red-glow {
+      color: #ff3b3b;
+      text-shadow:
+        0 0 5px #ff3b3b,
+        0 0 10px #ff0000,
+        0 0 20px #b30000;
+    }
+
+    /* SEARCH */
     .search-panel {
       width: 100%;
       padding: 20px 20px 0 20px;
-      background-color: #1f1f1f;
     }
 
     .search-panel input {
@@ -107,7 +127,7 @@
 
     /* LIBRARY */
     .container {
-      height: calc(100vh - 180px);
+      height: calc(100vh - 200px);
     }
 
     .library {
@@ -151,11 +171,15 @@
 
   <!-- HEADER -->
   <header class="site-header">
-    <div class="title">Arc Raider Lootgoblins Paradise</div>
+    <div class="title">
+      <span class="arc-raiders">ARC Raiders</span>
+      <span class="loot-title"> Lootgoblins Paradise</span>
+    </div>
+
     <div class="subtitle">
       Search for an item to check if it can be recycled. If it can, it will be marked with a 
       <span class="green-glow">Green</span> border.<br>
-      If the border turns <span class="red-glow">Red</span>, it's best to keep for future quests.
+      If an item turns <span class="red-glow">Red</span>, it's best to keep for future quests.
     </div>
   </header>
 
