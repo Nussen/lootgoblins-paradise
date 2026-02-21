@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recycling Item Search</title>
+
+  <!-- SCI-FI FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* HEADER */
+    .site-header {
+      width: 100%;
+      padding: 20px 0;
+      text-align: center;
+      font-size: 36px;
+      font-weight: 800;
+      font-family: 'Orbitron', sans-serif;
+      color: #7cff00;
+      background-color: #1f1f1f;
+      border-bottom: 2px solid #2a2a2a;
+
+      /* Glow animation */
+      text-shadow:
+        0 0 5px #7cff00,
+        0 0 10px #7cff00,
+        0 0 20px #4cff00;
+      animation: glowPulse 2.5s infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      0% {
+        text-shadow:
+          0 0 5px #7cff00,
+          0 0 10px #7cff00,
+          0 0 20px #4cff00;
+      }
+      100% {
+        text-shadow:
+          0 0 10px #b6ff4d,
+          0 0 20px #7cff00,
+          0 0 40px #4cff00;
+      }
+    }
+
+    .container {
+      display: flex;
+      height: calc(100vh - 80px);
+    }
+
+    /* LEFT SIDE: ITEM LIBRARY */
+    .library {
+      width: 70%;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 20px;
+      background-color: #1f1f1f;
+      overflow-y: auto;
+    }
+
+    .item {
+      text-align: center;
+    }
+
+    .item img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      border: 3px solid transparent;
+      border-radius: 8px;
+    }
+
+    /* BORDER ONLY AFTER SEARCH */
+    .searched.recyclable img {
+      border-color: green;
+    }
+
+    .searched.not-recyclable img {
+      border-color: red;
+    }
+
+    .item-name {
+      margin-top: 8px;
+      font-size: 14px;
+      color: white
+    }
+
+    /* RIGHT SIDE: SEARCH */
+    .search-panel {
+      width: 30%;
+      padding: 20px;
+      border-left: 2px solid #1f1f1f;
+      background-color: #1f1f1f
+    }
+
+    .search-panel input {
+      background-color: #333333;
+      color: white;
+      border: 3px solid #141414;
+    }
+
+    .no-results {
+      margin-top: 20px;
+      color: #db0000;
+      font-style: italic;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    Lootgoblins Paradise
+  </header>
+
+  <div class="container">
+
+    <!-- LEFT: ITEM LIBRARY -->
+    <div class="library" id="library">
+      <!-- Items will be injected here -->
+    </div>
+
+    <!-- RIGHT: SEARCH -->
+    <div class="search-panel">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search for an item..."
+        oninput="filterItems()"
+      />
+      <div class="no-results" id="noResults">No item found</div>
+    </div>
+
+  </div>
+
+  <script>
+    // ITEM DATA (edit this list)
+    const items = [
+      { name: "Ruined Accordion", image: "RuinedAccordion.png", recyclable: true },
+      { name: "Alarm Clock", image: "AlarmClock.png", recyclable: true },
+      { name: "ARC Coolant", image: "ARCCoolant.png", recyclable: true },
+      { name: "ARC Flex Rubber", image: "ARCFlexRubber.png", recyclable: true },
+      { name: "ARC Performance Steel", image: "ARCPerformanceSteel.png", recyclable: true },
+      { name: "ARC Synthetic Resin", image: "ARCSyntheticResin.png", recyclable: true },
+      { name: "ARC Thermo Lining", image: "ARCThermoLining.png", recyclable: true },
+      { name: "Bicycle Pump", image: "BicyclePump.png", recyclable: true },
+      { name: "Broken Flashlight", image: "BrokenFlashlight.png", recyclable: true },
+      { name: "Broken Guidance System", image: "BrokenGuidanceSystem.png", recyclable: true },
+      { name: "Broken Handcuffs", image: "BrokenHandcuffs.png", recyclable: true },
+      { name: "Broken Handheld Radio", image: "BrokenHandheldRadio.png", recyclable: true },
+      { name: "Broken Taser", image: "BrokenTaser.png", recyclable: true },
+      { name: "Burned ARC Circuitry", image: "BurnedARCCircuity.png", recyclable: true },
+      { name: "Camera Lens", image: "CameraLens.png", recyclable: true },
+      { name: "Candle Holder", image: "CandleHolder.png", recyclable: true },
+      { name: "Coolant", image: "Coolant.png", recyclable: true },
+      { name: "Cooling Coil", image: "CoolingCoil.png", recyclable: true },
+      { name: "Crumpled Plastic Bottle", image: "BrokenGuidanceSystem.png", recyclable: true },
+      { name: "Damaged ARC Motion Core", image: "DamagedARCMotionCore.png", recyclable: true },
+      { name: "Damaged ARC Powercell", image: "DamagedARCPowercell.png", recyclable: true },
+      { name: "Deflated Football", image: "BrokenGuidanceSystem.png", recyclable: true },
+      { name: "Dried-Out ARC Resin", image: "DriedOutARCResin.png", recyclable: true },
+      { name: "Expired Respirator", image: "BrokenGuidanceSystem.png", recyclable: true },
+      { name: "Flute", image: "BrokenGuidanceSystem.png", recyclable: true },
+      { name: "Frying Pan", image: "FryingPan.png", recyclable: true },
+      { name: "Garlic Press", image: "GarlicPress.png", recyclable: true },
+      { name: "Headphones", image: "BrokenGuidanceSystem.png", recyclable: true },
+      { name: "Ice Cream Scooper", image: "IceCreamScooper.png", recyclable: true },
+      { name: "Household Cleaner", image: "BrokenGuidanceSystem.png", recyclable: true },
+      { name: "Impure ARC Coolant", image: "ImpureARCCoolant.png", recyclable: true },
+      { name: "Industrial Charger", image: "IndustrialCharger.png", recyclable: true },
+      { name: "Industrial Magnet", image: "IndustrialMagnet.png", recyclable: true },
+      { name: "Metal Brackets", image: "MetalBrackets.png", recyclable: true },
+      { name: "Number Plate", image: "BrokenGuidanceSystem.png", recyclable: true },
+      { name: "Polluted Air Filter", image: "PollutedAirFilter.png", recyclable: true },
+      { name: "Portable TV", image: "PortableTV.png", recyclable: true },
+      { name: "Power Bank", image: "PowerBank.png", recyclable: true },
+      { name: "Projector", image: "Projector.png", recyclable: true },
+      { name: "Radio", image: "Radio.png", recyclable: true },
+      { name: "Remote Control", image: "RemoteControl.png", recyclable: true },
+      { name: "Ripped Safety Vest", image: "BrokenGuidanceSystem.png", recyclable: true },
+      { name: "Rollbot Part", image: "BrokenGuidanceSystem.png", recyclable: true },
+      { name: "Rubber Pad", image: "RubberPad.png", recyclable: true },
+      { name: "Ruined Baton", image: "BrokenGuidanceSystem.png", recyclable: true },
+      { name: "Ruined Handcuffs", image: "RuinedHandcuffs.png", recyclable: true },
+      { name: "Ruined Parachute", image: "RuinedParachute.png", recyclable: true },
+      { name: "Ruined Riot Shield", image: "RuinedRiotShield.png", recyclable: true },
+      { name: "Ruined Tactical Vest", image: "BrokenGuidanceSystem.png", recyclable: true },
+      { name: "Rusted Bolts", image: "RustedBolts.png", recyclable: true },
+      { name: "Rusty ARC Steel", image: "BrokenGuidanceSystem.png", recyclable: true },
+      { name: "Spotter Relay", image: "SpotterRelay.png", recyclable: true },
+      { name: "Spring Cushion", image: "SpringCushion.png", recyclable: true },
+      { name: "Tattered ARC Lining", image: "TatteredARCLining.png", recyclable: true },
+      { name: "Tattered Clothes", image: "TatteredClothes.png", recyclable: true },
+      { name: "Thermostat", image: "Thermostat.png", recyclable: true },
+      { name: "Torn Blanket", image: "TornBlanket.png", recyclable: true },
+      { name: "Turbo Pump", image: "TurboPump.png", recyclable: true },
+      { name: "Water Filter", image: "BrokenGuidanceSystem.png", recyclable: true },
+      { name: "Advanced Electrical Components", image: "AdvancedElectricalComponents.png", recyclable: false },
+      { name: "ARC Alloy", image: "ARCAlloy.png", recyclable: false },
+      { name: "Battery", image: "Battery.png", recyclable: false },
+      { name: "Durable Cloth", image: "DurableCloth.png", recyclable: false },
+      { name: "Electrical Components", image: "ElectricalComponents.png", recyclable: false },
+      { name: "Exodus Modules", image: "ExodusModules.png", recyclable: false },
+      { name: "Humidifier", image: "Humidifier.png", recyclable: false },
+      { name: "Leaper Pulse Unit", image: "LeaperPulseUnit.png", recyclable: false },
+      { name: "Magnetic Accelerator", image: "MagneticAccelerator.png", recyclable: false },
+      { name: "MetalParts", image: "MetalParts.png", recyclable: false },
+      { name: "Rubber Parts", image: "RubberParts.png", recyclable: false },
+      { name: "Sensors", image: "Sensors.png", recyclable: false },
+      { name: "Steel Spring", image: "SteelSpring.png", recyclable: false },
+      { name: "Wires", image: "Wires.png", recyclable: false },
+      { name: "Power Rod", image: "PowerRod.png", recyclable: false },
+      { name: "Rocketeer Driver", image: "RocketeetDriver.png", recyclable: false },
+      { name: "Power Rod", image: "PowerRod.png", recyclable: false },
+      { name: "Surveyor Vault", image: "SurveyorVault.png", recyclable: false },
+      { name: "Antiseptic", image: "Antiseptic.png", recyclable: false },
+      { name: "Hornet Driver", image: "HornetDriver.png", recyclable: false },
+      { name: "Syringe", image: "Syringe.png", recyclable: false },
+      { name: "Wasp Driver", image: "WaspDriver.png", recyclable: false },
+      { name: "Water Pump", image: "WaterPump.png", recyclable: false },
+      { name: "SnitchScanner", image: "SnitchScanner.png", recyclable: false },
+    ];
+
+    const library = document.getElementById("library");
+    const noResults = document.getElementById("noResults");
+
+    function renderItems(filteredItems, isSearching) {
+      library.innerHTML = "";
+
+      if (filteredItems.length === 0) {
+        noResults.style.display = "block";
+        return;
+      }
+
+      noResults.style.display = "none";
+
+      filteredItems.forEach(item => {
+        const div = document.createElement("div");
+
+        let classNames = "item";
+
+        if (isSearching) {
+          classNames += " searched ";
+          classNames += item.recyclable ? "recyclable" : "not-recyclable";
+        }
+
+        div.className = classNames;
+
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <div class="item-name">${item.name}</div>
+        `;
+
+        library.appendChild(div);
+      });
+    }
+
+    function filterItems() {
+      const searchValue = document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+    if (searchValue === "") {
+        renderItems(items, false);
+        return;
+      }
+
+      const filtered = items.filter(item =>
+        item.name.toLowerCase().includes(searchValue)
+      );
+
+      renderItems(filtered, true);
+    }
+
+    // INITIAL LOAD
+    renderItems(items, false);
+  </script>
+
+</body>
+</html>
