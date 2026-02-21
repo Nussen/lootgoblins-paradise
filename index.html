@@ -11,22 +11,37 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(
-    180deg,
-    #0b0c10,
-    #12131a,
-    #181a22,
-    #0e0f14
-  );
+  background:
+    linear-gradient(#0b0c10, #12131a 40%, #0e0f14),
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,255,180,0.04) 0px,
+      rgba(0,255,180,0.04) 1px,
+      transparent 1px,
+      transparent 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0,255,180,0.04) 0px,
+      rgba(0,255,180,0.04) 1px,
+      transparent 1px,
+      transparent 40px
+    );
   background-attachment: fixed;
+  animation: gridMove 20s linear infinite;
   color: white;
+}
+
+@keyframes gridMove {
+  0% { background-position: 0 0, 0 0, 0 0; }
+  100% { background-position: 0 0, 0 40px, 40px 0; }
 }
 
 /* HEADER */
 .site-header {
   position: relative;
   overflow: hidden;
-  padding: 40px 0 25px 0;
+  padding: 50px 0 25px 0;
   text-align: center;
   border-bottom: 2px solid #222;
 }
@@ -35,16 +50,16 @@ body {
 .site-header::before {
   content: "";
   position: absolute;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(0,255,180,0.15), transparent 70%);
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(0,255,180,0.12), transparent 70%);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
 }
 
-/* Canvas */
+/* Particle canvas */
 #particles {
   position: absolute;
   top: 0;
@@ -54,23 +69,42 @@ body {
   z-index: 1;
 }
 
+/* TITLE */
 .title {
   position: relative;
   z-index: 2;
-  font-size: 38px;
+  font-size: 42px;
   font-weight: 800;
   font-family: 'Orbitron', sans-serif;
+  display: inline-block;
+}
+
+/* Shine sweep effect */
+.title::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.4) 50%,
+    rgba(255,255,255,0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: shine 4s infinite;
+}
+
+@keyframes shine {
+  0% { left: -75%; }
+  100% { left: 130%; }
 }
 
 /* ARC Raiders gradient */
 .arc-raiders {
-  background: linear-gradient(
-    90deg,
-    #00c3ff,
-    #00ff9d,
-    #ffee00,
-    #ff2a2a
-  );
+  background: linear-gradient(90deg,#00c3ff,#00ff9d,#ffee00,#ff2a2a);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -83,22 +117,18 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* Loot glow */
+/* Lootgoblins glow */
 .loot-title {
   color: #7cff00;
-  text-shadow:
-    0 0 5px #7cff00,
-    0 0 15px #4cff00,
-    0 0 30px #4cff00;
+  text-shadow: 0 0 10px #7cff00, 0 0 25px #4cff00;
 }
 
 /* Subtitle */
 .subtitle {
-  position: relative;
-  z-index: 2;
-  margin-top: 12px;
+  margin-top: 14px;
   font-size: 14px;
-  line-height: 1.6;
+  z-index: 2;
+  position: relative;
 }
 
 .green-glow {
@@ -113,7 +143,18 @@ body {
 
 /* SEARCH */
 .search-panel {
-  padding: 20px;
+  padding: 10px;
+  border-color: #00ff88;
+  box-shadow: 0 0 15px #00ff88;
+  animation: shimmer 5s infinite;
+  background: linear-gradient(90deg,#000000,#000000,#000000,#290000,#004b2e,#9e9400,#9e9400,#290000);
+  
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .search-panel input {
@@ -128,40 +169,66 @@ body {
 
 /* LIBRARY */
 .container {
-  height: calc(100vh - 240px);
+  height: calc(100vh - 260px);
 }
 
 .library {
   width: 100%;
   padding: 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 25px;
   overflow-y: auto;
+  perspective: 1000px;
+}
+
+/* Center EVERYTHING in item card */
+.item {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.item:hover {
+  transform: translateY(-10px) scale(1.05);
 }
 
 .item img {
-  width: 100px;
-  height: 100px;
-  border-radius: 8px;
+  width: 110px;
+  height: 110px;
+  border-radius: 10px;
   border: 3px solid transparent;
-  transition: 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+/* Shimmer animation */
+@keyframes shimmer {
+  0% { box-shadow: 0 0 5px currentColor; }
+  50% { box-shadow: 0 0 20px currentColor; }
+  100% { box-shadow: 0 0 5px currentColor; }
 }
 
 .searched.recyclable img {
   border-color: #00ff88;
   box-shadow: 0 0 15px #00ff88;
+  animation: shimmer 2s infinite;
 }
 
 .searched.not-recyclable img {
   border-color: #ff2a2a;
   box-shadow: 0 0 15px #ff2a2a;
+  animation: shimmer 2s infinite;
 }
 
+/* Perfectly centered text */
 .item-name {
-  margin-top: 8px;
+  margin-top: 10px;
   font-size: 14px;
   text-align: center;
+  width: 100%;
 }
 </style>
 </head>
@@ -172,8 +239,8 @@ body {
   <canvas id="particles"></canvas>
 
   <div class="title">
-    <span class="loot-title"> Lootgoblins Paradise<br></span>
     <span class="arc-raiders">ARC Raiders</span>
+    <span class="loot-title"> Lootgoblins Paradise</span>
   </div>
 
   <div class="subtitle">
@@ -192,13 +259,12 @@ body {
 </div>
 
 <script>
-/* ADVANCED PARTICLES */
+/* Particle system remains unchanged from previous version */
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
-
 let particles = [];
-const count = 60;
 let mouse = { x: null, y: null };
+const count = 60;
 
 function resize() {
   canvas.width = canvas.offsetWidth;
@@ -228,10 +294,7 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   particles.forEach(p => {
-    // Parallax effect
-    let dx = 0;
-    let dy = 0;
-
+    let dx = 0, dy = 0;
     if (mouse.x && mouse.y) {
       dx = (mouse.x - canvas.width / 2) * 0.0005 * p.depth;
       dy = (mouse.y - canvas.height / 2) * 0.0005 * p.depth;
@@ -249,7 +312,6 @@ function draw() {
     ctx.fill();
   });
 
-  // Connecting lines
   for (let a = 0; a < particles.length; a++) {
     for (let b = a + 1; b < particles.length; b++) {
       let dx = particles[a].x - particles[b].x;
@@ -258,7 +320,6 @@ function draw() {
 
       if (dist < 120) {
         ctx.strokeStyle = "rgba(0,255,180," + (1 - dist / 120) * 0.2 + ")";
-        ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(particles[a].x, particles[a].y);
         ctx.lineTo(particles[b].x, particles[b].y);
@@ -271,7 +332,7 @@ function draw() {
 }
 draw();
 
-/* SEARCH */
+/* Search logic */
     const items = [
       { name: "Ruined Accordion", image: "RuinedAccordion.png", recyclable: true },
       { name: "Alarm Clock", image: "AlarmClock.png", recyclable: true },
@@ -380,10 +441,7 @@ function filterItems() {
   const val = document.getElementById("searchInput").value.toLowerCase().trim();
   if (!val) return renderItems(items, false);
 
-  renderItems(
-    items.filter(i => i.name.toLowerCase().includes(val)),
-    true
-  );
+  renderItems(items.filter(i => i.name.toLowerCase().includes(val)), true);
 }
 
 renderItems(items, false);
