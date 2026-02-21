@@ -12,6 +12,7 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
+      background-color: #1f1f1f;
     }
 
     /* HEADER */
@@ -26,7 +27,6 @@
       background-color: #1f1f1f;
       border-bottom: 2px solid #2a2a2a;
 
-      /* Glow animation */
       text-shadow:
         0 0 5px #7cff00,
         0 0 10px #7cff00,
@@ -49,19 +49,41 @@
       }
     }
 
-    .container {
-      display: flex;
-      height: calc(100vh - 80px);
+    /* SEARCH BAR AT TOP */
+    .search-panel {
+      width: 100%;
+      padding: 20px 20px 0 20px;
+      background-color: #1f1f1f;
     }
 
-    /* LEFT SIDE: ITEM LIBRARY */
+    .search-panel input {
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #333333;
+      color: white;
+      border: 3px solid #141414;
+      border-radius: 6px;
+    }
+
+    .no-results {
+      margin-top: 15px;
+      color: #db0000;
+      font-style: italic;
+      display: none;
+    }
+
+    /* LIBRARY FULL WIDTH */
+    .container {
+      height: calc(100vh - 140px);
+    }
+
     .library {
-      width: 70%;
+      width: 100%;
       padding: 20px;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
       gap: 20px;
-      background-color: #1f1f1f;
       overflow-y: auto;
     }
 
@@ -89,28 +111,7 @@
     .item-name {
       margin-top: 8px;
       font-size: 14px;
-      color: white
-    }
-
-    /* RIGHT SIDE: SEARCH */
-    .search-panel {
-      width: 30%;
-      padding: 20px;
-      border-left: 2px solid #1f1f1f;
-      background-color: #1f1f1f
-    }
-
-    .search-panel input {
-      background-color: #333333;
       color: white;
-      border: 3px solid #141414;
-    }
-
-    .no-results {
-      margin-top: 20px;
-      color: #db0000;
-      font-style: italic;
-      display: none;
     }
   </style>
 </head>
@@ -122,24 +123,22 @@
     Lootgoblins Paradise
   </header>
 
+  <!-- SEARCH (NOW TOP LEFT) -->
+  <div class="search-panel">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search for an item..."
+      oninput="filterItems()"
+    />
+    <div class="no-results" id="noResults">No item found</div>
+  </div>
+
+  <!-- LIBRARY -->
   <div class="container">
-
-    <!-- LEFT: ITEM LIBRARY -->
     <div class="library" id="library">
-      <!-- Items will be injected here -->
+      <!-- Items injected here -->
     </div>
-
-    <!-- RIGHT: SEARCH -->
-    <div class="search-panel">
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search for an item..."
-        oninput="filterItems()"
-      />
-      <div class="no-results" id="noResults">No item found</div>
-    </div>
-
   </div>
 
   <script>
@@ -230,6 +229,7 @@
       { name: "SnitchScanner", image: "SnitchScanner.png", recyclable: false },
     ];
 
+
     const library = document.getElementById("library");
     const noResults = document.getElementById("noResults");
 
@@ -271,7 +271,7 @@
         .toLowerCase()
         .trim();
 
-    if (searchValue === "") {
+      if (searchValue === "") {
         renderItems(items, false);
         return;
       }
@@ -283,7 +283,6 @@
       renderItems(filtered, true);
     }
 
-    // INITIAL LOAD
     renderItems(items, false);
   </script>
 
