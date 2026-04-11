@@ -203,22 +203,28 @@ body {
 }
 
 /* Shimmer animation */
-@keyframes shimmer {
-  0% { box-shadow: 0 0 5px currentColor; }
-  50% { box-shadow: 0 0 20px currentColor; }
-  100% { box-shadow: 0 0 5px currentColor; }
+@keyframes shimmer-green {
+  0% { box-shadow: 0 0 5px #00ff88; }
+  50% { box-shadow: 0 0 20px #00ff88; }
+  100% { box-shadow: 0 0 5px #00ff88; }
+}
+
+@keyframes shimmer-red {
+  0% { box-shadow: 0 0 5px #D30000; }
+  50% { box-shadow: 0 0 20px #D30000; }
+  100% { box-shadow: 0 0 5px #D30000; }
 }
 
 .searched.recyclable img {
   border-color: #00ff88;
   box-shadow: 0 0 15px #00ff88;
-  animation: shimmer 2s infinite;
+  animation: shimmer-green 2s infinite;
 }
 
 .searched.not-recyclable img {
-  border-color: #ff2a2a;
-  box-shadow: 0 0 15px #ff2a2a;
-  animation: shimmer 2s infinite;
+  border-color: #D30000;
+  box-shadow: 0 0 15px #D30000;
+  animation: shimmer-red 2s infinite;
 }
 
 /* Perfectly centered text */
@@ -366,13 +372,16 @@ draw();
 
 /* Search logic */
     const items = [
-      { name: "Ruined Accordion", image: "RuinedAccordion.png", recyclable: true },
       { name: "Alarm Clock", image: "AlarmClock.png", recyclable: true },
+      { name: "Advanced Electrical Components 5x", image: "AdvancedElectricalComponents.png", recyclable: false },
+      { name: "Antiseptic 2x", image: "Antiseptic.png", recyclable: false },
+      { name: "ARC Alloy 80x", image: "ARCAlloy.png", recyclable: false },
       { name: "ARC Coolant", image: "ARCCoolant.png", recyclable: true },
       { name: "ARC Flex Rubber", image: "ARCFlexRubber.png", recyclable: true },
       { name: "ARC Performance Steel", image: "ARCPerformanceSteel.png", recyclable: true },
       { name: "ARC Synthetic Resin", image: "ARCSyntheticResin.png", recyclable: true },
       { name: "ARC Thermo Lining", image: "ARCThermoLining.png", recyclable: true },
+      { name: "Battery 30x", image: "Battery.png", recyclable: false },
       { name: "Bicycle Pump", image: "BicyclePump.png", recyclable: true },
       { name: "Broken Flashlight", image: "BrokenFlashlight.png", recyclable: true },
       { name: "Broken Guidance System", image: "BrokenGuidanceSystem.png", recyclable: true },
@@ -384,27 +393,38 @@ draw();
       { name: "Candle Holder", image: "CandleHolder.png", recyclable: true },
       { name: "Coolant", image: "Coolant.png", recyclable: true },
       { name: "Cooling Coil", image: "CoolingCoil.png", recyclable: true },
+      { name: "Cooling Fan", image: "CoolingFan.png", recyclable: false },
       { name: "Crumpled Plastic Bottle", image: "CrumpledPlasticBottle.png", recyclable: true },
       { name: "Damaged ARC Motion Core", image: "DamagedARCMotionCore.png", recyclable: true },
       { name: "Damaged ARC Powercell", image: "DamagedARCPowercell.png", recyclable: true },
+      { name: "Durable Cloth 35x", image: "DurableCloth.png", recyclable: false },
       { name: "Deflated Football", image: "DeflatedFootball.png", recyclable: true },
       { name: "Dried-Out ARC Resin", image: "DriedOutARCResin.png", recyclable: true },
+      { name: "Electrical Components 30x", image: "ElectricalComponents.png", recyclable: false },
+      { name: "Exodus Modules 1x", image: "ExodusModules.png", recyclable: false },
       { name: "Expired Respirator", image: "ExpiredRespirator.png", recyclable: true },
       { name: "Flute", image: "flute.png", recyclable: true },
       { name: "Frying Pan", image: "FryingPan.png", recyclable: true },
       { name: "Garlic Press", image: "GarlicPress.png", recyclable: true },
       { name: "Headphones", image: "Headphones.png", recyclable: true },
-      { name: "Ice Cream Scooper", image: "IceCreamScooper.png", recyclable: true },
       { name: "Household Cleaner", image: "HouseholdCleaner.png", recyclable: true },
+      { name: "Hornet Driver 2x", image: "HornetDriver.png", recyclable: false },
+      { name: "Humidifier 5x", image: "Humidifier.png", recyclable: false },
+      { name: "Ice Cream Scooper", image: "IceCreamScooper.png", recyclable: true },
       { name: "Impure ARC Coolant", image: "ImpureARCCoolant.png", recyclable: true },
       { name: "Industrial Charger", image: "IndustrialCharger.png", recyclable: true },
       { name: "Industrial Magnet", image: "IndustrialMagnet.png", recyclable: true },
+      { name: "Leaper Pulse Unit 3x", image: "LeaperPulseUnit.png", recyclable: false },
+      { name: "LightBulb 5x", image: "LightBulb.png", recyclable: false },
+      { name: "Magnetic Accelerator 3x", image: "MagneticAccelerator.png", recyclable: false },
+      { name: "MetalParts 200x", image: "MetalParts.png", recyclable: false },
       { name: "Metal Brackets", image: "MetalBrackets.png", recyclable: true },
       { name: "Number Plate", image: "NumberPlate.png", recyclable: true },
       { name: "Polluted Air Filter", image: "PollutedAirFilter.png", recyclable: true },
       { name: "Portable TV", image: "PortableTV.png", recyclable: true },
       { name: "Power Bank", image: "PowerBank.png", recyclable: true },
       { name: "Projector", image: "Projector.png", recyclable: true },
+      { name: "Power Rod 1x", image: "PowerRod.png", recyclable: false },
       { name: "Radio", image: "Radio.png", recyclable: true },
       { name: "Remote Control", image: "RemoteControl.png", recyclable: true },
       { name: "Ripped Safety Vest", image: "RippedSafetyVest.png", recyclable: true },
@@ -415,42 +435,27 @@ draw();
       { name: "Ruined Parachute", image: "RuinedParachute.png", recyclable: true },
       { name: "Ruined Riot Shield", image: "RuinedRiotShield.png", recyclable: true },
       { name: "Ruined Tactical Vest", image: "RuinedTacticalVest.png", recyclable: true },
+      { name: "Ruined Accordion", image: "RuinedAccordion.png", recyclable: true },
       { name: "Rusted Bolts", image: "RustedBolts.png", recyclable: true },
       { name: "Rusty ARC Steel", image: "RustyARCSteel.png", recyclable: true },
+      { name: "Rubber Parts 150x", image: "RubberParts.png", recyclable: false },
+      { name: "Rocketeer Driver 1x", image: "RocketeetDriver.png", recyclable: false },
       { name: "Spotter Relay", image: "SpotterRelay.png", recyclable: true },
       { name: "Spring Cushion", image: "SpringCushion.png", recyclable: true },
+      { name: "Snitch Scanner 2x", image: "SnitchScanner.png", recyclable: false },
+      { name: "Sensors 20x", image: "Sensors.png", recyclable: false },
+      { name: "Steel Spring 15x", image: "SteelSpring.png", recyclable: false },
+      { name: "Surveyor Vault 1x", image: "SurveyorVault.png", recyclable: false },
+      { name: "Syringe 1x", image: "Syringe.png", recyclable: false },
       { name: "Tattered ARC Lining", image: "TatteredARCLining.png", recyclable: true },
       { name: "Tattered Clothes", image: "TatteredClothes.png", recyclable: true },
       { name: "Thermostat", image: "Thermostat.png", recyclable: true },
       { name: "Torn Blanket", image: "TornBlanket.png", recyclable: true },
       { name: "Turbo Pump", image: "TurboPump.png", recyclable: true },
       { name: "Water Filter", image: "WaterFilter.png", recyclable: true },
-      { name: "Advanced Electrical Components 5x", image: "AdvancedElectricalComponents.png", recyclable: false },
-      { name: "ARC Alloy 80x", image: "ARCAlloy.png", recyclable: false },
-      { name: "Battery 30x", image: "Battery.png", recyclable: false },
-      { name: "Durable Cloth 35x", image: "DurableCloth.png", recyclable: false },
-      { name: "Electrical Components 30x", image: "ElectricalComponents.png", recyclable: false },
-      { name: "Exodus Modules 1x", image: "ExodusModules.png", recyclable: false },
-      { name: "Humidifier 5x", image: "Humidifier.png", recyclable: false },
-      { name: "Leaper Pulse Unit 3x", image: "LeaperPulseUnit.png", recyclable: false },
-      { name: "Magnetic Accelerator 3x", image: "MagneticAccelerator.png", recyclable: false },
-      { name: "MetalParts 200x", image: "MetalParts.png", recyclable: false },
-      { name: "Rubber Parts 150x", image: "RubberParts.png", recyclable: false },
-      { name: "Sensors 20x", image: "Sensors.png", recyclable: false },
-      { name: "Steel Spring 15x", image: "SteelSpring.png", recyclable: false },
       { name: "Wires 30x", image: "Wires.png", recyclable: false },
-      { name: "Power Rod 1x", image: "PowerRod.png", recyclable: false },
-      { name: "Rocketeer Driver 1x", image: "RocketeetDriver.png", recyclable: false },
-      { name: "Power Rod", image: "PowerRod.png", recyclable: false },
-      { name: "Surveyor Vault 1x", image: "SurveyorVault.png", recyclable: false },
-      { name: "Antiseptic 2x", image: "Antiseptic.png", recyclable: false },
-      { name: "Hornet Driver 2x", image: "HornetDriver.png", recyclable: false },
-      { name: "Syringe 1x", image: "Syringe.png", recyclable: false },
       { name: "Wasp Driver 2x", image: "WaspDriver.png", recyclable: false },
       { name: "Water Pump 1x", image: "WaterPump.png", recyclable: false },
-      { name: "Snitch Scanner 2x", image: "SnitchScanner.png", recyclable: false },
-      { name: "LightBulb 5x", image: "LightBulb.png", recyclable: false },
-      { name: "Cooling Fan", image: "CoolingFan.png", recyclable: false },
     ];
 
 const library = document.getElementById("library");
@@ -483,4 +488,3 @@ renderItems(items, false);
 
 </body>
 </html>
-
